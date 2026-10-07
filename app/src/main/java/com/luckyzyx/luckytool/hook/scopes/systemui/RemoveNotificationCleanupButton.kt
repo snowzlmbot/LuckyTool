@@ -13,7 +13,7 @@ object RemoveNotificationCleanupButton : YukiBaseHooker() {
             "com.oplusos.systemui.notification.ClearAllController", //C12 C13
             "com.oplus.systemui.statusbar.notification.ClearAllController", //C14 C15
             "com.oplus.systemui.notification.clearall.ClearAllController" //C15.0.1
-        ).toClass().resolve().apply {
+        ).toClassOrNull()?.resolve()?.apply {
             firstMethod { name = "setVisible";parameterCount = 3 }.hook {
                 before {
                     arg(1).set(false)

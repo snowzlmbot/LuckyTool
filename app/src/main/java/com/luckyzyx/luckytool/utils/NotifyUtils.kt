@@ -100,7 +100,7 @@ object NotifyUtils {
      */
     fun requestPermission(activity: Activity) {
         if (Build.VERSION.SDK_INT >= 33) {
-            if (checkPermission(activity)) {
+            if (!checkPermission(activity)) {
                 if (!ActivityCompat.shouldShowRequestPermissionRationale(
                         activity, POST_NOTIFICATIONS
                     )

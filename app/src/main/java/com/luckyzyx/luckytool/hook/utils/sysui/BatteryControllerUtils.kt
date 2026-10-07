@@ -14,13 +14,15 @@ import org.lsposed.lsparanoid.Obfuscate
 @Suppress("unused")
 class BatteryControllerUtils(val classLoader: ClassLoader?) {
 
-    val clazz = VariousClass(
-        "com.oplusos.systemui.keyguard.charginganim.ChargingAnimationImpl", //C12 C13
-        "com.oplusos.systemui.common.battery.OplusBatteryController" //C14
-    ).load(classLoader)
+    val clazz = runCatching {
+        VariousClass(
+            "com.oplusos.systemui.keyguard.charginganim.ChargingAnimationImpl", //C12 C13
+            "com.oplusos.systemui.common.battery.OplusBatteryController" //C14
+        ).load(classLoader)
+    }.getOrNull()
 
     fun getInstance(context: Context): Any? {
-        return clazz.resolve().firstMethod { name = "getInstance" }.let {
+        return clazz?.resolve()?.firstMethod { name = "getInstance" }?.let {
             if (it.self.parameterCount == 0) it.invoke()
             else it.invoke(context)
         }
